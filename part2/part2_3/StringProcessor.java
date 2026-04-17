@@ -6,7 +6,17 @@ public class StringProcessor {
     public static int countVowels(String text) {
         // TODO: посчитайте русские и английские гласные.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return -1;
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            if (VOWELS.indexOf(ch) != -1) {
+                count++;
+            }
+        }
+        return count;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
@@ -14,21 +24,72 @@ public class StringProcessor {
         // TODO: палиндром без учета регистра и знаков препинания.
         // Подсказка: сравнение символов с двух концов.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return false;
+        if (text == null || text.isEmpty()) {
+            return true;
+        }
+
+        String cleaned = text.toLowerCase().replaceAll("[^a-zа-яё0-9]", "");
+
+        int left = 0;
+        int right = cleaned.length() - 1;
+
+        while (left < right) {
+            if (cleaned.charAt(left) != cleaned.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
     public static String reverse(String text) {
         // TODO: реверс без StringBuilder.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return "";
+        if (text == null || text.isEmpty()) {
+            return text;
+        }
+
+        char[] chars = text.toCharArray();
+
+        int left = 0;
+        int right = chars.length - 1;
+
+        while (left < right) {
+            char temp = chars[left];
+            chars[left] = chars[right];
+            chars[right] = temp;
+            left++;
+            right--;
+        }
+
+        return new String(chars);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
     public static String findLongestWord(String sentence) {
         // TODO: найдите самое длинное слово.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return "";
+        if (sentence == null || sentence.isEmpty()) {
+            return "";
+        }
+
+        String[] words = sentence.split("[\\s,.;:!?()-]+");
+
+        String longestWord = "";
+        int maxLength = 0;
+
+        for (String word : words) {
+            String cleanWord = word.replaceAll("^[^a-zA-Zа-яА-Я0-9]+|[^a-zA-Zа-яА-Я0-9]+$", "");
+
+            if (cleanWord.length() > maxLength) {
+                maxLength = cleanWord.length();
+                longestWord = cleanWord;
+            }
+        }
+
+        return longestWord;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
