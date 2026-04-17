@@ -22,6 +22,10 @@ public class BankAccount {
     public boolean deposit(double amount) {
         // TODO: пополнение разрешено только при amount > 0.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
+        if (amount > 0) {
+            balance += amount;
+            return true;
+        }
         return false;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
@@ -33,14 +37,51 @@ public class BankAccount {
         // 3) при 3 неверных попытках blocked=true;
         // 4) верный PIN сбрасывает failedAttempts и проверяет amount.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return false;
+        if (blocked) {
+            System.out.println("Счёт заблокирован!");
+            return false;
+        }
+
+        // 2) Проверка PIN
+        if (!validatePin(enteredPin)) {
+            failedAttempts++;
+            System.out.println("Неверный PIN! Попытка " + failedAttempts + " из 3");
+
+            // 3) При 3 неверных попытках блокируем счёт
+            if (failedAttempts >= 3) {
+                blocked = true;
+                System.out.println("Счёт заблокирован из-за превышения попыток!");
+            }
+            return false;
+        }
+
+        // 4) PIN верный - сбрасываем failedAttempts
+        failedAttempts = 0;
+
+        // Проверяем сумму снятия
+        if (amount <= 0) {
+            System.out.println("Сумма снятия должна быть положительной!");
+            return false;
+        }
+
+        if (amount > balance) {
+            System.out.println("Недостаточно средств!");
+            return false;
+        }
+
+        // Снимаем деньги
+        balance -= amount;
+        return true;
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
     public String getMaskedBalance() {
         // TODO: скрывайте суммы свыше 100000.
         // ▼ ВАШ КОД ЗДЕСЬ ▼
-        return "TODO";
+        if (balance > 100_000) {
+            return "***";
+        }
+        return String.format("%.2f", balance);
         // ▲ КОНЕЦ ВАШЕГО КОДА ▲
     }
 
